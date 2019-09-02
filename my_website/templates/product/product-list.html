@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block  title %}All Products{% endblock %}
+
+{% block body %}
+    <h1 class="text-center" style="margin-top: 60px;">All Products</h1>
+    {% for product in  products %}
+        <div class="col-lg-8 offset-2">
+            <div class="card text-center" style="margin-top: 150px;">
+                <div class="card-header" style="">
+                    <a href="{% url 'detail-product' product.slug %}">
+                        <h2 style="color: black;">"{{ product.title }}" Product Details</h2>
+                    </a>
+
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Product Name</h5>
+                    <p class="card-text" style="font-family: 'Trebuchet MS';">{{ product.name }}</p>
+
+                    <h5 class="card-title">Product Price</h5>
+                    <p class="card-text" style="color: green"><b>${{ product.price }}</b></p>
+
+                    <h5 class="card-title">Product Description</h5>
+                    <p class="card-text" style="font-family: 'Bahnschrift Light';">{{ product.description }}</p>
+
+                </div>
+                <div class="card-footer text-muted">
+                    Added {{ product.added_date|timesince }} ago.
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+
+
+{% endblock %}

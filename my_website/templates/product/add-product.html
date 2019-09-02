@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %} Add Product {% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="text-center" style="margin-top: 50px;">Product Adding Page</h1>
+        <!--PRODUCT ADDING -->
+        <div class="row" style="margin-top: 100px;">
+            <div class="col-sm">
+                <div class="card">
+                    <h2 class="card-header">Add Product</h2>
+                    <div class="card-body">
+                        <h5 class="card-title">Enter all of these fields.</h5>
+                        <form action="#" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <div class="row">
+                                    {% for field in form %}
+                                        <b>{{ field.label }}:</b>
+                                        {{ field }}
+                                    {% endfor %}
+                                </div>
+                                <br><input class="btn btn-success offset-9" type="submit" value="Add Product">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- PRODUCT LIST -->
+            <div class="col-sm" style="margin-left: 50px;">
+                <div class="card">
+                    <h2 class="card-header">Product List</h2>
+                    <div class="card-body">
+                        <h5 class="card-title">Click a product name to see its details or click <a
+                                href="{% url 'list-products' %}">here</a> to
+                            list all products.</h5>
+                        <div style="font-size: 20px; height: 300px; overflow-y: scroll;">
+                            {% for product in products %}
+                                <a href="{% url 'detail-product' product.slug %}"
+                                   class="list-group-item list-group-item-action"
+                                   style="color: #4c79cc; font-family: 'Calibri Light';"><b>{{ product|join:"," }}</b></a>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    {{ msg }}
+    </div>
+{% endblock %}

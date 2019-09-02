@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Product Editing{% endblock %}
+
+{% block body %}
+<h1 class="text-center" style="margin-top: 50px;">Product Editing Page</h1>
+    <div class="row" style="margin-top: 100px;">
+        <div class="col-lg-6 offset-3">
+            <div class="card">
+                <h2 class="card-header">Edit Product</h2>
+                <div class="card-body">
+                    <h5 class="card-title">Edit saved product's info, click update button.</h5>
+                    <form action="{% url 'edit-product' product.slug %}" method="POST">
+                    {% csrf_token %}
+                        <div class="form-group">
+                            <div class="row">
+                                {% for field in form %}
+                                    <label class="control-label" style="color: #0f0f0f"
+                                           for="{{ field.id_for_label }}">
+                                        <b>{{ field.label }}:</b>
+                                    </label>
+                                    {{ field }}
+                                {% endfor %}
+                            </div>
+                            <br><input class="btn btn-success offset-11" type="submit" value="Change">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}

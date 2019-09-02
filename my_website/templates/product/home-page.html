@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Homepage{% endblock %}
+
+{% block body %}
+
+    <div class="row" style="margin-top: 100px;">
+        <div class="col-lg-6 offset-3">
+            <div class="jumbotron">
+                <h1 class="display-4">Hello!</h1>
+                <p class="lead"> This is my first attempt in web
+                    programming. I just wanted to do some practicing.
+                    This is a simple product creating-editing-deleting website.</p>
+                <hr class="my-4">
+                <p>Choose an action that you want to do.</p>
+                <p class="lead">
+                    <a class="btn btn-primary btn-lg" style="width: 26%" href="{% url 'list-products' %}" role="button">
+                        See product list
+                    </a>
+                </p>
+                <p class="lead">
+                    <a class="btn btn-success btn-lg" style="width: 26%" href="{% url 'add-product' %}" role="button">
+                        Add a new product
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

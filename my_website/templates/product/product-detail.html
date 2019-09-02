@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %} {{ product.title }}{% endblock %}
+
+{% block body %}
+    <h1 class="text-center" style="margin-top: 50px;">Product Detail Page</h1>
+    <div class="col-lg-8 offset-2">
+        <div class="card text-center" style="margin-top: 150px;">
+            <div class="card-header" style="">
+                <h2>"{{ product.title }}" Product Details</h2>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Product Name</h5>
+                <p class="card-text" style="font-family: 'Trebuchet MS';">{{ product.name }}</p>
+
+                <h5 class="card-title">Product Price</h5>
+                <p class="card-text" style="color: green"><b>${{ product.price }}</b></p>
+
+                <h5 class="card-title">Product Description</h5>
+                <p class="card-text" style="font-family: 'Bahnschrift Light'">{{ product.description }}</p>
+
+            </div>
+            <div class="card-footer text-muted">
+                Added {{ product.added_date|timesince }} ago.
+            </div>
+            <form action="{% url 'delete-product' product.slug %}" method="post">
+                {% csrf_token %}
+                <br><input class="btn btn-danger div_center" style="width: 11%" type="submit" value="Delete Product">
+            </form>
+
+            <form action="{% url 'edit-product' product.slug %}" method="get">
+                {% csrf_token %}
+                <br><input class="btn btn-primary div_center" style="width: 11%" type="submit" value="Edit Product">
+            </form>
+            <br>
+        </div>
+    </div>
+{% endblock %}
