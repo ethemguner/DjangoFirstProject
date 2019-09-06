@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}My Shopping List{% endblock %}
+
+{% block top_content %}
+
+    <script rel="script" type="text/javascript">
+        $(document).ready(function () {
+            $(".delete-button").click(function () {
+                var $this = $(this);
+                var $url = $this.attr('url');
+                $.ajax({
+                    url: $url,
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {},
+                    success: function () {
+                        location.reload()
+                    }
+                })
+            })
+        })
+    </script>
+
+{% endblock %}
+
+{% block body %}
+    <!-- SHOPPING LIST -->
+    <div class="col-lg-6 offset-3" style="margin-top: 200px;">
+        <h2 class="text-center">Your Shopping List</h2><br><br>
+        <ul class="list-group">
+            {% for product in products %}
+                <li class="list-group-item"><a href="{{ product.get_path }}">
+                    <b style="color: black">
+                        {{ forloop.counter }} - {{ product }}</b>
+                </a>
+                    <input url="{% url 'delete-cart-product' product.get_id %}"
+                           class="delete-button btn btn-danger float-lg-right" type="submit" value="Delete">
+                    <div class="row" style="margin-left: 1%; margin-top: 1%;">
+                        <p style="font-size: 18px;"><b>Price: </b></p>
+                        <span style="color: green; font-size: 18px;">${{ product.get_price }}</span>
+                    </div>
+                </li>
+            {% empty %}
+                <h5 class="text-danger">
+                    You haven't any product in your shopping list.<br><br>
+                </h5>
+                <h5>Go to <a href="{% url 'list-products' %}"> product list.</a></h5>
+            {% endfor %}
+        </ul>
+        <br>
+        {% if totalPrice == 0 %}
+        {% else %}
+            <div class="row">
+                <div class="offset-10">
+                    <h4>Total Value:</h4>
+                    <p class="text-right" style="font-size: 22px; color: green"><b>${{ totalPrice }}</b></p>
+                    <input type="submit" value="BUY" class="btn btn-primary float-lg-right" style="width: 80px;">
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

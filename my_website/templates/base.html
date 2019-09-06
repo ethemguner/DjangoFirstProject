@@ -3,31 +3,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <script rel="script" type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+
+
     {% block top_content %}{% endblock %}
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
 
 <!-- NAVBAR -->
-<nav class="navbar navbar-light bg-light fixed-top">
+<nav class="myNavbar navbar navbar-light bg-light fixed-top">
     <form class="form-inline">
         <a href="{% url 'homepage' %}">
             <button class="btn btn-outline-success" type="button">Homepage</button>
         </a>
         <a href="{% url 'list-products' %}">
-            <button class="btn btn-sm btn-outline-secondary" type="button" style="margin-left: 5px;">See Product List</button>
+            <button class="btn btn-sm btn-outline-secondary" type="button" style="margin-left: 5px;">All Products
+            </button>
+        </a>
+        <a href="{% url 'add-product' %}">
+            <button class="btn btn-sm btn-outline-secondary" type="button" style="margin-left: 5px;">Add Product
+            </button>
         </a>
     </form>
+
+    <!-- SHOPPING LIST BAR -->
+    {% include 'product/cart/nav-cart.html' %}
 </nav>
 
 <!-- MESSAGES -->
 {% include 'product/messages.html' %}
 
-
 {% block body %}
-<!-- ALL OF THE HTMLS/TEMPLATES WILL BE LOADED IN THIS BLOCK -->
+    <!-- ALL OF THE HTMLS/TEMPLATES WILL BE LOADED IN THIS BLOCK -->
 {% endblock %}
 
 </body>

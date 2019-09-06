@@ -1,5 +1,26 @@
 {% extends 'base.html' %}
 {% block title %} {{ product.title }}{% endblock %}
+{% block top_content %}
+
+    <script type="text/javascript" rel="script">
+        $(document).ready(function () {
+            $("#cart-button").click(function () {
+                var $this = $(this);
+                var $url = $this.attr('url');
+                $.ajax({
+                    url: $url,
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {},
+                    success: function (data) {
+                        location.reload()
+                    }
+                })
+            })
+        })
+    </script>
+
+{% endblock %}
 
 {% block body %}
     <h1 class="text-center" style="margin-top: 50px;">Product Detail Page</h1>
@@ -12,26 +33,44 @@
                 <h5 class="card-title">Product Name</h5>
                 <p class="card-text" style="font-family: 'Trebuchet MS';">{{ product.name }}</p>
 
+                {% if product.get_image %}
+                    <img class="img-thumbnail" src="{{ product.get_image }}">
+                {% endif %}
+
                 <h5 class="card-title">Product Price</h5>
                 <p class="card-text" style="color: green"><b>${{ product.price }}</b></p>
 
                 <h5 class="card-title">Product Description</h5>
-                <p class="card-text" style="font-family: 'Bahnschrift Light'">{{ product.description }}</p>
+                <p class="card-text" style="font-family: 'Bahnschrift Light'">{{ product.description|linebreaksbr }}</p>
 
             </div>
             <div class="card-footer text-muted">
                 Added {{ product.added_date|timesince }} ago.
             </div>
-            <form action="{% url 'delete-product' product.slug %}" method="post">
-                {% csrf_token %}
-                <br><input class="btn btn-danger div_center" style="width: 11%" type="submit" value="Delete Product">
-            </form>
-
-            <form action="{% url 'edit-product' product.slug %}" method="get">
-                {% csrf_token %}
-                <br><input class="btn btn-primary div_center" style="width: 11%" type="submit" value="Edit Product">
-            </form>
+            <br>
+            <br>
             <br>
         </div>
     </div>
+    </div>
+    <div class="col-lg-4 offset-7">
+
+        <div class="row">
+            <div class="text-center">
+                <br><input url="{% url 'add-product-cart' product.slug %}" class="btn btn-dark div_center"
+                           type="submit" value="Add to Cart" id="cart-button" style="margin-right: 15px;">
+            </div>
+            <a href="{% url 'delete-product' product.slug %}">
+                <br><input class="btn btn-danger div_center" type="submit" value="Delete Product" style="margin-right: 15px;">
+            </a>
+
+            <a href="{% url 'edit-product' product.slug %}">
+                <br><input class="btn btn-primary div_center" type="submit" value="Edit Product">
+            </a>
+        <br>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
 {% endblock %}

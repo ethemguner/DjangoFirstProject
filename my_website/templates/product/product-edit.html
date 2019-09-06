@@ -9,7 +9,7 @@
                 <h2 class="card-header">Edit Product</h2>
                 <div class="card-body">
                     <h5 class="card-title">Edit saved product's info, click update button.</h5>
-                    <form action="{% url 'edit-product' product.slug %}" method="POST">
+                    <form action="{% url 'edit-product' product.slug %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                         <div class="form-group">
                             <div class="row">

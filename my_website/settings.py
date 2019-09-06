@@ -11,8 +11,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-import django_heroku
-django_heroku.settings(locals())
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
@@ -57,6 +55,8 @@ ROOT_URLCONF = 'my_website.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        # 'DIRS': ['my_website/templates'],
+        # 'DIRS': ['my_website/templates'],
         'DIRS': ['my_website/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -67,9 +67,9 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
             ],
         },
-    },
+    }
 ]
-
+print(TEMPLATES[0].get('DIRS'))
 WSGI_APPLICATION = 'my_website.wsgi.application'
 
 
@@ -120,8 +120,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
-MEDIA_ROOT = PROJECT_PATH + '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')

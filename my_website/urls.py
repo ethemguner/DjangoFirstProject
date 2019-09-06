@@ -22,7 +22,8 @@ import Product.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('product', include(Product.urls)),
+    path('product/', include(Product.urls)),
     path('', home_page, name='homepage')
 
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + \
+              static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -11,15 +11,14 @@
                     <h2 class="card-header">Add Product</h2>
                     <div class="card-body">
                         <h5 class="card-title">Enter all of these fields.</h5>
-                        <form action="#" method="post">
-                            {% csrf_token %}
+                        <form action="{% url 'add-product' %}" enctype="multipart/form-data" method="post" for="{{ field.id_for_label }}">
+                        {% csrf_token %}
                             <div class="form-group">
-                                <div class="row">
                                     {% for field in form %}
                                         <b>{{ field.label }}:</b>
                                         {{ field }}
                                     {% endfor %}
-                                </div>
+
                                 <br><input class="btn btn-success offset-9" type="submit" value="Add Product">
                             </div>
                         </form>
