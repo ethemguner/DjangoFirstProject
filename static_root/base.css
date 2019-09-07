@@ -14,8 +14,3 @@
   -o-transition: opacity .15s linear;
   transition: opacity .15s linear
 }
-
-.ScrollC {
-  height:10px;
-  overflow-y: scroll;
-}

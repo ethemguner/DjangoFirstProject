@@ -1,18 +1,8 @@
 {% load poll_extras %}
-<div class="col-lg-2 offset-2">
-    <div class="dropdown show">
-        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-           data-toggle="dropdown"
-           aria-haspopup="true" aria-expanded="false">
-            {% if poll_extras|cart_list_amount == 0 %}
-            My Cart
-            {% else %}
-            My Cart ({{ poll_extras|cart_list_amount }})
-            {% endif %}
-        </a>
-
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <a class="dropdown-item" href="{% url 'list-cart' %}">See My Cart</a>
-        </div>
-    </div>
-</div>
+<a class="dropdown-item" href="{% url 'list-cart' %}">
+    {% if poll_extras|cart_list_amount == 0 %}
+    <i class="fa fa-shopping-cart"></i> My Cart
+{% else %}
+    <i class="fa fa-shopping-cart"></i> My Cart ({{ poll_extras|cart_list_amount }})
+{% endif %}
+</a>

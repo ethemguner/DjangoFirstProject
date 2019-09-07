@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}Log in{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-lg-3 offset-2" style="margin-top: 350px">
+            {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-dismissable alert-danger">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        {{ error|safe }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <form method="post" action="{% url 'user-login' %}">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label class="control-label" style="color: #0f0f0f" for="{{ field.id_for_label }}">
+                                    {{ field.label }}
+                                </label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    {% for error in field.errors %}
+                                        <span style="color: red; font-family: 'Calibri Light'; font-size: 17px;"><b>{{ error }}</b></span>
+                                    {% endfor %}
+                                {% else %}
+                                    {% if field.help_text %}
+                                        <span class="text-info" style="color: dodgerblue">{{ field.help_text }}</span>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <span><b>You haven't an account? <a href="{% url 'user-register' %}"> Creat an account.</a></b></span>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <input type="submit" class="btn btn-success" value="Login" style="margin-top: 10px">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="offset-7" style="margin-top: -350px">
+                <h2>Welcome to our market.</h2>
+                <h4 style="margin-top: 50px;">About us</h4>
+                <p>We're trying to be one of the most popular e-commerce market in the world.
+                But we cannot do this without you. We need you. We want to make sure all of our services
+                work impeccable to you.</p>
+                <h4 style="margin-top: 50px;">Special Offers & Discounts</h4>
+                <p>Almost every week, we have a few special offers to our users. Also, we make agreements with our
+                suppliers to ensure beneficial discounts.</p>
+                <h4 style="margin-top: 50px;">Quality</h4>
+                <p>We've certain rules about quality. Our suppliers have to follow our rules. Otherwise
+                they'll be banned from our community. We've no compromise about quality.</p>
+            </div>
+        </div>
+
+{% endblock %}

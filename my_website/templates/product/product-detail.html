@@ -13,7 +13,14 @@
                     dataType: 'json',
                     data: {},
                     success: function (data) {
-                        location.reload()
+                        console.log(data.is_valid)
+                        if (data.is_valid === true){
+                            location.reload();
+                        }
+                        else{
+                            window.location = '/auths/login/';
+                        }
+
                     }
                 })
             })

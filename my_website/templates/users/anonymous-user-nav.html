@@ -1,0 +1,10 @@
+<div class="dropdown"  style="margin-right: 60px;">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+        Sign up or Login
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="{% url 'user-login' %}"> <i class="fa fa-sign-in"></i> Login</a>
+        <a class="dropdown-item" href="{% url 'user-register' %}"> <i class="fa fa-user-plus"></i> No account? Sign up!</a>
+    </div>
+</div>

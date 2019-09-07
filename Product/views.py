@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect, reverse, get_object_or_404
+from django.http import HttpResponseBadRequest
 from .models import Product, Cart
 from .forms import ProductForm, ProductQueryForm
 from django.contrib import messages
@@ -8,18 +9,19 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from .templatetags import poll_extras
 
-
 def add_product(request):
-    form = ProductForm()
-    products = Product.objects.all()
-    if request.method == "POST":
-        form = ProductForm(data=request.POST, files=request.FILES)
-        product = form.save(commit=False)
-        product.save()
-        msg = "<b>{} has added successfully!".format(product.name)
-        messages.success(request, msg, extra_tags="success")
-        return HttpResponseRedirect(reverse('add-product', urlconf=None))
-
+    if request.user.is_active:
+        form = ProductForm()
+        products = Product.objects.all()
+        if request.method == "POST":
+            form = ProductForm(data=request.POST, files=request.FILES)
+            product = form.save(commit=False)
+            product.save()
+            msg = "<b>{} has added successfully!".format(product.name)
+            messages.success(request, msg, extra_tags="success")
+            return HttpResponseRedirect(reverse('add-product', urlconf=None))
+    else:
+        return HttpResponseRedirect(reverse('user-login'))
     return render(request, 'product/add-product.html', context={'form': form, 'products': products})
 
 
@@ -37,13 +39,18 @@ def detail_product(request, slug):
 
 
 def delete_product(request, slug):
-    product = get_object_or_404(Product, slug=slug)
-    if request.method == "GET":
-        msg = "<b>{} has deleted successfully.</b>".format(product.name)
+    print(request.user.is_superuser)
+    if request.user.is_superuser:
+        product = get_object_or_404(Product, slug=slug)
+        if request.method == "GET":
+            msg = "<b>{} has deleted successfully.</b>".format(product.name)
+            messages.success(request, msg, extra_tags='danger')
+            product.delete()
+            return HttpResponseRedirect(reverse('add-product', urlconf=None))
+    else:
+        msg = "<b>You're not authorized to do this process.</b>"
         messages.success(request, msg, extra_tags='danger')
-        product.delete()
-        return HttpResponseRedirect(reverse('add-product', urlconf=None))
-
+        return HttpResponseRedirect(reverse('homepage'))
     return render(request, 'product/add-product.html', context={'product': product})
 
 
@@ -60,39 +67,48 @@ def home_page(request):
 
 
 def edit_product(request, slug):
-    product = get_object_or_404(Product, slug=slug)
-    form = ProductForm(instance=product, data=request.POST or None, files=request.FILES or None)
+    if not request.user.is_authenticated:
+        product = get_object_or_404(Product, slug=slug)
+        form = ProductForm(instance=product, data=request.POST or None, files=request.FILES or None)
 
-    if form.is_valid():
-        form.save()
-        msg = "<b>{} has updated!</b>".format(product.name)
-        messages.success(request, msg, extra_tags="success")
-        return HttpResponseRedirect(product.get_absolute_url())
-
+        if form.is_valid():
+            form.save()
+            msg = "<b>{} has updated!</b>".format(product.name)
+            messages.success(request, msg, extra_tags="success")
+            return HttpResponseRedirect(product.get_absolute_url())
+    else:
+        return HttpResponseBadRequest()
     return render(request, 'product/product-edit.html', context={'product': product, 'form': form})
 
 
 def list_product(request):
-    products = Product.objects.all()
-    form = ProductQueryForm(data=request.GET or None)
-    search = None
-    if form.is_valid():
-        search = form.cleaned_data.get('search', None)
-        if search:
-            products = products.filter(Q(title__icontains=search) | Q(name__icontains=search)).distinct()
+    if request.user.is_active:
+        products = Product.objects.all()
+        form = ProductQueryForm(data=request.GET or None)
+        search = None
+        if form.is_valid():
+            search = form.cleaned_data.get('search', None)
+            if search:
+                products = products.filter(Q(title__icontains=search) | Q(name__icontains=search)).distinct()
+    else:
+        return HttpResponseRedirect(reverse('user-login'))
 
     return render(request, 'product/product-list.html', context={'products': products, 'form':form, 'search':search})
 
 
 def add_product_cart(request, slug):
-    data = {'is_valid': True, 'html': '', 'count': 0}
-    product = get_object_or_404(Product, slug=slug)
-    cart = Cart(product=product)
-    cart.save()
-    html = render_to_string('product/cart/nav-cart.html', request=request)
-    data.update({'html': html})
+    if request.user.is_active:
+        data = {'is_valid': True, 'html': '', 'count': 0}
+        product = get_object_or_404(Product, slug=slug)
+        cart = Cart(product=product)
+        cart.save()
+        html = render_to_string('product/cart/nav-cart.html', request=request)
+        data.update({'html': html})
+    else:
+        data = {'is_valid': False, 'html': '', 'count': 0}
+        html = render_to_string('users/login.html', request=request)
+        data.update({'html': html})
     return JsonResponse(data=data)
-
 
 def cart_list(request):
     products = Cart.objects.all()

@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <script rel="script" type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     {% block top_content %}{% endblock %}
     <title>{% block title %}{% endblock %}</title>
@@ -31,7 +31,14 @@
     </form>
 
     <!-- SHOPPING LIST BAR -->
-    {% include 'product/cart/nav-cart.html' %}
+    {% if request.user.is_active %}
+        {% include 'users/logged-user-nav.html' %}
+
+    {% else %}
+
+        {% include 'users/anonymous-user-nav.html' %}
+    {% endif %}
+
 </nav>
 
 <!-- MESSAGES -->

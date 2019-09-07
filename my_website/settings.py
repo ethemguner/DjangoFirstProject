@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Product'
+    'phone_field',
+    'Product',
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -69,7 +71,6 @@ TEMPLATES = [
         },
     }
 ]
-print(TEMPLATES[0].get('DIRS'))
 WSGI_APPLICATION = 'my_website.wsgi.application'
 
 
