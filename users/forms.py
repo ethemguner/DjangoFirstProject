@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 import re
 from django.db import models
-from phone_field import PhoneField
 from .models import Profile
 
 
@@ -125,4 +124,3 @@ class PasswordChangeForm(forms.Form):
             raise forms.ValidationError("Current password wrong.")
 
         return old_password
-
