@@ -1,7 +1,7 @@
 # DjangoProjects
 My first project in Django. A e-commerce website. Live at http://ethemguner.pythonanywhere.com
 
-#About Website
+# About Website
 It's very simple. I'm trying to understand Django web development. 
 
 This website is actually very functional. You can login and create 
@@ -20,10 +20,6 @@ Every user has a cart list. (I really tried so hard to do this. I believe there 
 is very stable.)
 
 For superuser, adding-deleting-editing product available.
-
-#The Next Step
-I want to do add product to cart process with ajax request. Now, page is reloading and gives a message.
-
 
 
 
