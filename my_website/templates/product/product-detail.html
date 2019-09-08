@@ -1,34 +1,5 @@
 {% extends 'base.html' %}
 {% block title %} {{ product.title }}{% endblock %}
-{% block top_content %}
-
-    <script type="text/javascript" rel="script">
-        $(document).ready(function () {
-            $("#cart-button").click(function () {
-                var $this = $(this);
-                var $url = $this.attr('url');
-                $.ajax({
-                    url: $url,
-                    type: 'GET',
-                    dataType: 'json',
-                    data: {},
-                    success: function (data) {
-                        console.log(data.is_valid)
-                        if (data.is_valid === true){
-                            location.reload();
-                        }
-                        else{
-                            window.location = '/auths/login/';
-                        }
-
-                    }
-                })
-            })
-        })
-    </script>
-
-{% endblock %}
-
 {% block body %}
     <h1 class="text-center" style="margin-top: 50px;">Product Detail Page</h1>
     <div class="col-lg-8 offset-2">
@@ -64,8 +35,10 @@
 
         <div class="row">
             <div class="text-center">
-                <br><input url="{% url 'add-product-cart' product.slug %}" class="btn btn-dark div_center"
+                <a href="{% url 'add-product-cart' product.slug %}">
+                <br><input class="btn btn-dark div_center"
                            type="submit" value="Add to Cart" id="cart-button" style="margin-right: 15px;">
+                </a>
             </div>
             <a href="{% url 'delete-product' product.slug %}">
                 <br><input class="btn btn-danger div_center" type="submit" value="Delete Product" style="margin-right: 15px;">

@@ -4,13 +4,13 @@ from .models import Product, Cart
 from .forms import ProductForm, ProductQueryForm
 from django.contrib import messages
 from django.db.models import Q
+from django.contrib.auth.models import User
 
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from .templatetags import poll_extras
 
 def add_product(request):
-    if request.user.is_active:
+    if request.user.is_superuser:
         form = ProductForm()
         products = Product.objects.all()
         if request.method == "POST":
@@ -21,6 +21,8 @@ def add_product(request):
             messages.success(request, msg, extra_tags="success")
             return HttpResponseRedirect(reverse('add-product', urlconf=None))
     else:
+        msg = "<b>You're not authorized to do this process."
+        messages.success(request, msg, extra_tags="danger")
         return HttpResponseRedirect(reverse('user-login'))
     return render(request, 'product/add-product.html', context={'form': form, 'products': products})
 
@@ -39,7 +41,6 @@ def detail_product(request, slug):
 
 
 def delete_product(request, slug):
-    print(request.user.is_superuser)
     if request.user.is_superuser:
         product = get_object_or_404(Product, slug=slug)
         if request.method == "GET":
@@ -50,24 +51,14 @@ def delete_product(request, slug):
     else:
         msg = "<b>You're not authorized to do this process.</b>"
         messages.success(request, msg, extra_tags='danger')
-        return HttpResponseRedirect(reverse('homepage'))
+        return HttpResponseRedirect(reverse('detail-product', kwargs={'slug':slug}))
     return render(request, 'product/add-product.html', context={'product': product})
 
-
-def cart_list_amount():
-    count = Cart.objects.all().count()
-    context = {'pAmount': count}
-    return context
-
-
 def home_page(request):
-    response = cart_list_amount()
-    amount = response.get('pAmount')
-    return render(request, 'product/home-page.html', context={'pAmount':amount})
-
+    return render(request, 'product/home-page.html')
 
 def edit_product(request, slug):
-    if not request.user.is_authenticated:
+    if request.user.is_superuser:
         product = get_object_or_404(Product, slug=slug)
         form = ProductForm(instance=product, data=request.POST or None, files=request.FILES or None)
 
@@ -77,41 +68,39 @@ def edit_product(request, slug):
             messages.success(request, msg, extra_tags="success")
             return HttpResponseRedirect(product.get_absolute_url())
     else:
-        return HttpResponseBadRequest()
+        msg = "<b>You're not authorized to do this process.</b>"
+        messages.success(request, msg, extra_tags='danger')
+        return HttpResponseRedirect(reverse('detail-product', kwargs={'slug':slug}))
     return render(request, 'product/product-edit.html', context={'product': product, 'form': form})
 
 
 def list_product(request):
-    if request.user.is_active:
-        products = Product.objects.all()
-        form = ProductQueryForm(data=request.GET or None)
-        search = None
-        if form.is_valid():
-            search = form.cleaned_data.get('search', None)
-            if search:
-                products = products.filter(Q(title__icontains=search) | Q(name__icontains=search)).distinct()
-    else:
-        return HttpResponseRedirect(reverse('user-login'))
+
+    products = Product.objects.all()
+    form = ProductQueryForm(data=request.GET or None)
+    search = None
+    if form.is_valid():
+        search = form.cleaned_data.get('search', None)
+        if search:
+            products = products.filter(Q(title__icontains=search) | Q(name__icontains=search)).distinct()
 
     return render(request, 'product/product-list.html', context={'products': products, 'form':form, 'search':search})
 
 
 def add_product_cart(request, slug):
     if request.user.is_active:
-        data = {'is_valid': True, 'html': '', 'count': 0}
         product = get_object_or_404(Product, slug=slug)
-        cart = Cart(product=product)
+        cart = Cart.objects.create(product=product, user=request.user)
         cart.save()
-        html = render_to_string('product/cart/nav-cart.html', request=request)
-        data.update({'html': html})
+        msg = "<b>{} has added to your cart.".format(product.title)
+        messages.success(request, msg, extra_tags="primary")
     else:
-        data = {'is_valid': False, 'html': '', 'count': 0}
-        html = render_to_string('users/login.html', request=request)
-        data.update({'html': html})
-    return JsonResponse(data=data)
+        return HttpResponseRedirect(reverse('user-login'))
+    return HttpResponseRedirect(reverse('detail-product', kwargs={'slug':slug}))
 
-def cart_list(request):
-    products = Cart.objects.all()
+def user_cart_list(request, username):
+    user = get_object_or_404(User, username=username)
+    products = user.cart_set.all()
     prices = products.values('product__price')
 
     priceList = []
@@ -131,7 +120,3 @@ def delete_cart_product(request, id):
     data.update({'html': html})
 
     return JsonResponse(data=data)
-
-def search_product(request):
-
-    return render(request, 'product/search/searching.html', context={'result':search_result, 'search':search})

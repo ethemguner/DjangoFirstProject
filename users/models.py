@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.shortcuts import reverse
+from Product.models import Cart
 
 # Create your models here.
 class Profile(models.Model):
@@ -29,3 +30,11 @@ class Profile(models.Model):
 
     def get_user_url(self):
         return reverse('#', kwargs={'username': self.user.username})
+
+    def cart_list_count(self):
+        print(self.user.cart_set.all().count())
+        return self.user.cart_set.all().count()
+
+    @classmethod
+    def get_user(cls):
+        return cls.user.username

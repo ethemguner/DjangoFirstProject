@@ -4,6 +4,7 @@ from django.template.defaultfilters import slugify
 from uuid import uuid4
 from django.shortcuts import reverse
 import os
+from django.contrib.auth.models import User
 
 # Create your models here.
 def upload_to(instance, filename):
@@ -71,7 +72,7 @@ class Product(models.Model):
 
 class Cart(models.Model):
     product = models.ForeignKey(Product, null=True, default=1, on_delete=models.CASCADE)
-
+    user = models.ForeignKey(User, null=True, blank=False, verbose_name="User", on_delete=models.CASCADE)
     class Meta:
         verbose_name_plural = "Product in Cart"
 
@@ -89,3 +90,7 @@ class Cart(models.Model):
 
     def get_id(self):
         return self.id
+
+    @classmethod
+    def get_cart_list(cls):
+        return cls.objects.all()

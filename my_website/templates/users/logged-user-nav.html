@@ -1,10 +1,12 @@
-<div class="dropdown" style="margin-right: 60px;">
+<div class="dropdown" style="margin-right: 100px;">
     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
         {{ request.user.get_full_name }}
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        {% include 'product/cart/nav-cart.html' %}
+        <a class="dropdown-item" href="{% url 'list-cart' request.user.get_username %}"><i class="fa fa-cogs"></i>
+            My Cart ({{ request.user.profile.cart_list_count }})
+        </a>
         <a class="dropdown-item" href="{% url 'user-settings' %}"><i class="fa fa-cogs"></i> Settings</a>
         <a class="dropdown-item" href="{% url 'password-change' %}"><i class="fa fa-unlock"></i> Change password</a>
         <a class="dropdown-item" href="{% url 'user-logout' %}"><i class="fa fa-sign-out"></i> Log out</a>

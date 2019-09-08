@@ -1,8 +1,0 @@
-{% load poll_extras %}
-<a class="dropdown-item" href="{% url 'list-cart' %}">
-    {% if poll_extras|cart_list_amount == 0 %}
-    <i class="fa fa-shopping-cart"></i> My Cart
-{% else %}
-    <i class="fa fa-shopping-cart"></i> My Cart ({{ poll_extras|cart_list_amount }})
-{% endif %}
-</a>
