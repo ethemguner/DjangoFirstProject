@@ -2,14 +2,20 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.shortcuts import reverse
 from phone_field import PhoneField
+
 # Create your models here.
 class Profile(models.Model):
-    user = models.OneToOneField(User, null=True, blank=False,verbose_name="User",on_delete=models.CASCADE)
-    adress = models.TextField(max_length=1000, verbose_name='Adress:', blank=True, null=True)
-    phone_number = PhoneField(blank=False, null=True, verbose_name='Phone Number:')
+    user = models.OneToOneField(User, null=True, blank=False, verbose_name="User", on_delete=models.CASCADE)
+    adress = models.TextField(max_length=1000, verbose_name='Adress:', blank=True, null=True,
+                              help_text="Your shipping adress.")
+    phone_number = models.CharField(max_length=10, verbose_name='Phone Number', blank=True, null=True,
+                                    help_text="Notifications will send to your phone number.")
 
     class Meta:
         verbose_name_plural = "Profiles"
+
+    def __str__(self):
+        return self.user.username
 
     def get_username(self):
         user = self.user
@@ -23,4 +29,4 @@ class Profile(models.Model):
         return None
 
     def get_user_url(self):
-        return reverse('#', kwargs={'username':self.user.username})
+        return reverse('#', kwargs={'username': self.user.username})

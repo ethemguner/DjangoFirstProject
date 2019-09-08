@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Profile Settings{% endblock %}
+{% block body %}
+    <!-- UPDATE FORM -->
+    <div class="row" style="margin-top: 200px;">
+        <div class="col-lg-3 offset-3">
+            <h3>Shipping Adress & Phone Number</h3>
+            <form method="post" action="{% url 'user-settings' %}">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-group" style="margin-top: 20px">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label class="control-label" style="color: #0f0f0f" for="{{ field.id_for_label }}">
+                                    <b>{{ field.label }}:</b>
+                                </label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    {% for error in field.errors %}
+                                        <span style="color: red; font-family: 'Calibri Light'; font-size: 17px;"><b>{{ error }}</b></span>
+                                    {% endfor %}
+                                {% else %}
+                                    {% if field.help_text %}
+                                        <span class="text-info" style="color: dodgerblue">{{ field.help_text }}</span>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <span style="font-style: italic"><p>*These information will be use to contact and shipping.</p></span>
+                <input type="submit" class="btn btn-success float-lg-right" value="Save" style="margin-top: 10px">
+            </form>
+        </div>
+    </div>
+    <!-- CURRENT INFORMATION -->
+    <div class="container">
+        <div class="row">
+            <div class="offset-7" style="margin-top: -340px">
+                <h3>Current Contact Information</h3>
+                <h5 style="margin-top: 50px;">Adress <i class="fa fa-home"></i></h5>
+                {% if request.user.profile.adress == None %}
+                    <p class="text-danger">No adress information.</p>
+                {% else %}
+                    <p>{{ request.user.profile.adress }}</p>
+                {% endif %}
+                <h5 style="margin-top: 50px;">Phone Number <i class="fa fa-phone-square"></i></h5>
+                {% if request.user.profile.phone_number == None %}
+                    <p class="text-danger">No phone number information.</p>
+                {% else %}
+                    <p>{{ request.user.profile.phone_number }}</p>
+                {% endif %}
+            </div>
+        </div>
+{% endblock %}
