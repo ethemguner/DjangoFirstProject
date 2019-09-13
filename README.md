@@ -13,11 +13,11 @@ Permissions've adjusted. For example, If you're not superuser you cannot add a p
 If you're not login you cannot add product to your cart.
 
 You can add product to your shopping list. You can see added product(s) in your cart list page. Also in cart list, there is total price.
-In cart list, adress and phone number is listing. If adress or phone numer information isn't adjusted, It gives a message about that
+In cart list, adress and phone number are listing. If adress or phone numer information isn't adjusted, It gives a message about that
 and gives a link to settings page to adjust the adress and phone number.
 
 Every user has a cart list. (I really tried so hard to do this. I believe there are some problems about that but for now everything
-is very stable.)
+seems very stable.)
 
 For superuser, adding-deleting-editing product available.
 
