@@ -12,7 +12,7 @@ Changing password is available.
 Permissions've adjusted. For example, If you're not superuser you cannot add a product, delete a product or edit a product. On the other hand
 If you're not login you cannot add product to your cart.
 
-You can add product to your shopping list. You can see added product(s) in your cart list page. Also total price is calculating.
+You can add product to your shopping list. You can see added product(s) in your cart list page. Also in cart list, there is total price.
 In cart list, adress and phone number is listing. If adress or phone numer information isn't adjusted, It gives a message about that
 and gives a link to settings page to adjust the adress and phone number.
 
