@@ -1,4 +1,4 @@
-# DjangoProjects
+# Django First Project
 My first project in Django. A e-commerce website. Live at http://ethemguner.pythonanywhere.com
 
 # About Website
