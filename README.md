@@ -1,5 +1,5 @@
 # Django First Project
-My first project in Django. A e-commerce website. Live at http://ethemguner.pythonanywhere.com
+My first project in Django. A e-commerce website.
 
 # About Website
 It's very simple. I'm trying to understand Django web development. 
